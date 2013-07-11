@@ -2,7 +2,7 @@
 require 'jellyfish'
 
 module Saya
-  class Core
+  class API
     include Jellyfish
 
     post %r{\A/?post\Z} do

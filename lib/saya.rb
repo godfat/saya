@@ -1,5 +1,5 @@
 
-require 'saya/core'
+require 'saya/api'
 require 'rack'
 
 Saya::Root   = File.expand_path("#{__dir__}/..")
@@ -8,7 +8,7 @@ Saya::Server = Rack::Builder.new do
   use Rack::ContentType
 
   map '/api' do
-    run Saya::Core.new
+    run Saya::API.new
   end
 
   map '/' do
