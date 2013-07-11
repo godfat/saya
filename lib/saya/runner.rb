@@ -5,7 +5,7 @@ module Saya::Runner
   module_function
   def options
     @options ||=
-    [['ruby options:'    , ''                                         ],
+    [['ruby options:'      , ''                                       ],
      ['-e, --eval LINE'                                                ,
       'Evaluate a LINE of code'                                       ],
 
@@ -114,8 +114,8 @@ module Saya::Runner
         exit
 
       when /^-v/, '--version'
-        require 'rib/version'
-        puts(Rib::VERSION)
+        require 'saya/version'
+        puts(Saya::VERSION)
         exit
 
       else
