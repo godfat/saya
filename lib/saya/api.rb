@@ -20,7 +20,7 @@ module Saya
         @rc_twitter ||= RC::Twitter.new(session['rc.twitter'] || {})
         if block_given?
           ret = yield @rc_twitter
-          session['rc.twitter'] = {:data => rc_twitter.data}
+          session['rc.twitter'] = {'data' => rc_twitter.data}
           ret
         else
           @rc_twitter
@@ -36,11 +36,11 @@ module Saya
       if rc_twitter.authorized?
         rc_twitter.me.inspect
       elsif verifier = request.params['oauth_verifier']
-        rc_twitter{ |t| t.authorize!(:oauth_verifier => verifier) }
+        rc_twitter{ |t| t.authorize!('oauth_verifier' => verifier) }
         rc_twitter.me.inspect
       else
         found rc_twitter{ |t|
-                t.authorize_url!(:oauth_callback => request.url) }
+                t.authorize_url!('oauth_callback' => request.url) }
       end
     end
 

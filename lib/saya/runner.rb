@@ -27,6 +27,7 @@ module Saya::Runner
      ['-p, --port PORT'    , 'Use PORT (default: 8080)'               ],
      ['-E, --env RACK_ENV' , 'Use RACK_ENV (default: production)'     ],
      ['-D, --daemonize'    , 'Run daemonized in the background'       ],
+     ['-a, --auth PATH'    , 'Use AUTH file to specify key/secret'    ],
      ['-c, --config.ru'    , 'Print the path to config.ru'            ],
      ['-h, --help'         , 'Print this message'                     ],
      ['-v, --version'      , 'Print the version'                      ]]
@@ -35,7 +36,6 @@ module Saya::Runner
   def run argv=ARGV
     o = parse(argv)
     u = %w[zbatery rainbows unicorn]
-    ENV['RACK_ENV'] = o[:environment] if o[:environment]
     app, _ = Rack::Builder.parse_file(o[:config])
 
     handler = if ( u.include?(o[:server]) && rack_handlers(o[:server])) ||
@@ -46,7 +46,7 @@ module Saya::Runner
     end
 
     Process.daemon && $0 = 'saya' if o[:daemonize]
-    handler.run(wrap_app(app, o[:environment]), o)
+    handler.run(wrap_app(app), o)
   end
 
   def rack_handlers server
@@ -57,8 +57,8 @@ module Saya::Runner
     false
   end
 
-  def wrap_app app, env
-    case env
+  def wrap_app app
+    case ENV['RACK_ENV']
     when 'development', 'dev'
       Rack::CommonLogger.new(Rack::Lint.new(Rack::ShowExceptions.new(app)))
     else
@@ -67,8 +67,7 @@ module Saya::Runner
   end
 
   def parse argv
-    options = {:config => "#{Saya::Root}/config.ru",
-               :Host   => '0.0.0.0', :Port => 8080 }
+    options = {:Host => '0.0.0.0', :Port => 8080, :config => Saya::Config}
 
     until argv.empty?
       case arg = argv.shift
@@ -100,10 +99,13 @@ module Saya::Runner
         options[:Port] = $1 || argv.shift
 
       when /^-E=?(.+)?/, /^--env=?(.+)?/
-        options[:environment] = $1 || argv.shift
+        ENV['RACK_ENV'] = $1 || argv.shift
 
       when /^-D/, '--daemonize'
         options[:daemonize] = true
+
+      when /^-a=?(.+)?/, /^--auth=?(.+)?/
+        ENV['SAYA_AUTH'] = $1 || argv.shift
 
       when /^-c/, '--config.ru'
         puts(options[:config])
