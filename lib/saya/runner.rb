@@ -22,11 +22,12 @@ module Saya::Runner
        'Require the library, before executing'                        ],
 
      ['saya options:'      , ''                                       ],
-     ['-s, --server SERVER', 'serve using SERVER'                     ],
-     ['-o, --host HOST'    , 'listen on HOST (default: 0.0.0.0)'      ],
-     ['-p, --port PORT'    , 'use PORT (default: 8080)'               ],
-     ['-E, --env RACK_ENV' , 'use RACK_ENV (default: production)'     ],
-     ['-D, --daemonize'    , 'run daemonized in the background'       ],
+     ['-s, --server SERVER', 'Serve using SERVER'                     ],
+     ['-o, --host HOST'    , 'Listen on HOST (default: 0.0.0.0)'      ],
+     ['-p, --port PORT'    , 'Use PORT (default: 8080)'               ],
+     ['-E, --env RACK_ENV' , 'Use RACK_ENV (default: production)'     ],
+     ['-D, --daemonize'    , 'Run daemonized in the background'       ],
+     ['-c, --config.ru'    , 'Print the path to config.ru'            ],
      ['-h, --help'         , 'Print this message'                     ],
      ['-v, --version'      , 'Print the version'                      ]]
   end
