@@ -33,18 +33,22 @@ module Saya::Runner
   end
 
   def run argv=ARGV
-    opts = parse(argv)
-    unic = %w[zbatery rainbows unicorn]
-    app, _ = Rack::Builder.parse_file(opts[:config])
-    if ( unic.include?(opts[:server]) && load_rack_handlers(opts[:server])) ||
-       (!unic.include?(opts[:server]) && opts[:server])
-      Rack::Handler.get(opts[:server])
+    o = parse(argv)
+    u = %w[zbatery rainbows unicorn]
+    app, _ = Rack::Builder.parse_file(o[:config])
+
+    handler = if ( u.include?(o[:server]) && rack_handlers(o[:server])) ||
+                 (!u.include?(o[:server]) && o[:server])
+      Rack::Handler.get(o[:server])
     else
-      Rack::Handler.pick(unic + %w[puma thin webrick])
-    end.run(app, opts)
+      Rack::Handler.pick(u + %w[puma thin webrick])
+    end
+
+    Process.daemon && $0 = 'saya' if o[:daemonize]
+    handler.run(app, o)
   end
 
-  def load_rack_handlers server
+  def rack_handlers server
     gem 'rack-handlers'
     true
   rescue Gem::LoadError
