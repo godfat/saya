@@ -13,11 +13,13 @@ module Saya
         t.authorize!('oauth_verifier' => request.params['oauth_verifier']) }
       name = "@#{rc_twitter.me['screen_name']}"
       set_cookie('twitter_name', name)
+      # we need 200 redirect because in 302 we cannot really set cookie!
       <<-HTML
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="refresh" content="0;URL='#{request.base_url}'">
     <script>window.location = #{request.base_url.inspect}</script>
   </head>
   <body>
