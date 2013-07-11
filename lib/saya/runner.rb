@@ -92,6 +92,10 @@ module Saya::Runner
       when /^-D/, '--daemonize'
         options[:daemonize] = true
 
+      when /^-c/, '--config.ru'
+        puts(options[:config])
+        exit
+
       when /^-h/, '--help'
         puts(help)
         exit
