@@ -13,4 +13,12 @@ Saya::Server = Rack::Builder.app do
 
   map '/api' do run Saya::API.new                          end
   map '/'    do run Rack::File.new("#{Saya::Root}/public") end
+
+  env = ENV['RACK_ENV'] || 'production'
+
+  RC::Config.load(RC::Twitter,
+    "#{Saya::Root}/config/auth.yaml", env, 'twitter')
+
+  RC::Config.load(RC::Facebook,
+    "#{Saya::Root}/config/auth.yaml", env, 'facebook')
 end
