@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="saya">
   <head>
     <meta charset="utf-8">
     <title>Saya</title>
@@ -31,31 +31,32 @@
         }
       }
     </style>
-
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-cookies.min.js"></script>
     <script>
-      function auth($scope){
-        $scope.twitter_auth = function(){
-          if($scope.twitter_name === undefined)
-            $scope.twitter_name = '@godfat';
-          else
-            $scope.twitter_name = undefined;
-        };
-        $scope.facebook_auth = function(){
-          if($scope.facebook_name === undefined)
-            $scope.facebook_name = 'Lin Jen-Shin';
-          else
-            $scope.facebook_name = undefined;
-        };
-
+      angular.module('saya', ['ngCookies']);
+      function auth($scope, $http, $cookies){
         ['twitter', 'facebook'].forEach(function(target){
           var checked = function(){
-            return $scope[target + "_name"] !== undefined;
+            return $scope[target + "_name"]() !== undefined;
           };
           $scope[target + '_checked'] = checked;
           $scope[target + '_as']      = function(){
             if(checked()) return 'as';
-          }
+          };
+          $scope[target + '_name']    = function(){
+            return $cookies[target + '_name'];
+          };
+
+          $scope[target + '_auth'] = function(){
+            if(checked()){
+              $cookies[target + '_name'] = undefined;
+            }
+            else{
+              $http.post('/api/auth/' + target).success(
+                function(data){ window.location = data; });
+            }
+          };
         });
       };
     </script>
@@ -99,11 +100,11 @@
           <form action="/api/post" method="post" ng-controller="auth">
             <label class="checkbox">
               <input type="checkbox" ng-click="twitter_auth()" ng-checked="twitter_checked()"/>
-              Twitter {{twitter_as()}} <span class="label label-success">{{twitter_name}}</span>
+              Twitter {{twitter_as()}} <span class="label label-success">{{twitter_name()}}</span>
             </label>
             <label class="checkbox">
               <input type="checkbox" ng-click="facebook_auth()" ng-checked="facebook_checked()"/>
-              Facebook {{facebook_as()}} <span class="label label-success">{{facebook_name}}</span>
+              Facebook {{facebook_as()}} <span class="label label-success">{{facebook_name()}}</span>
             </label>
             <div class="editarea">
               <p><textarea id="textarea"></textarea></p>

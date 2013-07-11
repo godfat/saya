@@ -7,15 +7,47 @@ module Saya
   class API
     include Jellyfish
 
-    controller_include Module.new{
-      def set_cookie key, value
-        if value
-          Rack::Utils.set_cookie_header!(headers, key, value)
-        else
-          Rack::Utils.delete_cookie_header!(headers, key)
-        end
-      end
+    twitter = %r{\A/?auth/twitter\Z}
+    get twitter do
+      rc_twitter{ |t|
+        t.authorize!('oauth_verifier' => request.params['oauth_verifier']) }
+      name = "@#{rc_twitter.me['screen_name']}"
+      set_cookie('twitter_name', name)
+      <<-HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script>window.location = #{request.base_url.inspect}</script>
+  </head>
+  <body>
+  </body>
+</html>
+HTML
+    end
 
+    post twitter do
+      rc_twitter{ |t|
+        t.authorize_url!('oauth_callback' => request.url) }
+    end
+
+    get  %r{\A/?auth/facebook\Z} do
+    end
+
+    post %r{\A/?post\Z} do
+    end
+
+    handle RC::Twitter::Error do
+      set_cookie('twitter_name', nil)
+      session.delete('rc.twitter')
+      rc_twitter.data = nil
+      status, headers, body = call(env)
+      self.status  status
+      self.headers headers
+      self.body    body
+    end
+
+    controller_include Module.new{
       def rc_twitter
         @rc_twitter ||= RC::Twitter.new(session['rc.twitter'] || {})
         if block_given?
@@ -27,27 +59,19 @@ module Saya
         end
       end
 
+      def set_cookie key, value
+        headers_merge({})
+        if value
+          Rack::Utils.set_cookie_header!(headers, key, :value => value,
+                                                       :path  => '/')
+        else
+          Rack::Utils.delete_cookie_header!(headers, key)
+        end
+      end
+
       def session
         env['rack.session']
       end
     }
-
-    get  %r{\A/?auth/twitter\Z} do
-      if rc_twitter.authorized?
-        rc_twitter.me.inspect
-      elsif verifier = request.params['oauth_verifier']
-        rc_twitter{ |t| t.authorize!('oauth_verifier' => verifier) }
-        rc_twitter.me.inspect
-      else
-        found rc_twitter{ |t|
-                t.authorize_url!('oauth_callback' => request.url) }
-      end
-    end
-
-    get  %r{\A/?auth/facebook\Z} do
-    end
-
-    post %r{\A/?post\Z} do
-    end
   end
 end
