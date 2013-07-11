@@ -35,6 +35,7 @@ module Saya::Runner
   def run argv=ARGV
     o = parse(argv)
     u = %w[zbatery rainbows unicorn]
+    ENV['RACK_ENV'] = o[:environment] if o[:environment]
     app, _ = Rack::Builder.parse_file(o[:config])
 
     handler = if ( u.include?(o[:server]) && rack_handlers(o[:server])) ||
@@ -45,7 +46,7 @@ module Saya::Runner
     end
 
     Process.daemon && $0 = 'saya' if o[:daemonize]
-    handler.run(app, o)
+    handler.run(wrap_app(app, o[:environment]), o)
   end
 
   def rack_handlers server
@@ -54,6 +55,15 @@ module Saya::Runner
   rescue Gem::LoadError
     warn("Install gem `\e[31mrack-handlers\e[0m' to run #{server} server")
     false
+  end
+
+  def wrap_app app, env
+    case env
+    when 'development', 'dev'
+      Rack::CommonLogger.new(Rack::Lint.new(Rack::ShowExceptions.new(app)))
+    else
+      app
+    end
   end
 
   def parse argv
