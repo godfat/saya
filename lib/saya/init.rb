@@ -9,4 +9,3 @@ ENV['SAYA_AUTH'] ||= Saya::Auth
   RC::Config.load(RC.const_get(name),
     ENV['SAYA_AUTH'], ENV['RACK_ENV'], name.downcase)
 end
-
