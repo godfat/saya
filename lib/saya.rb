@@ -3,6 +3,7 @@ require 'saya/api'
 require 'rack'
 
 Saya::Root   = File.expand_path("#{__dir__}/..")
+Saya::Auth   = "#{Saya::Root}/config/auth.yaml"
 Saya::Config = "#{Saya::Root}/config.ru"
 Saya::Server = Rack::Builder.app do
   use Rack::ContentLength

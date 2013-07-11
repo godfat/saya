@@ -28,6 +28,7 @@ module Saya::Runner
      ['-E, --env RACK_ENV' , 'Use RACK_ENV (default: production)'     ],
      ['-D, --daemonize'    , 'Run daemonized in the background'       ],
      ['-a, --auth PATH'    , 'Use AUTH file to specify key/secret'    ],
+     ['-y, --auth.yaml'    , 'Print the content of default auth file' ],
      ['-c, --config.ru'    , 'Print the path to config.ru'            ],
      ['-h, --help'         , 'Print this message'                     ],
      ['-v, --version'      , 'Print the version'                      ]]
@@ -103,6 +104,10 @@ module Saya::Runner
 
       when /^-D/, '--daemonize'
         options[:daemonize] = true
+
+      when /^-y/, '--auth.yaml' # reverse order to avoid mis-match
+        puts(File.read(Saya::Auth))
+        exit
 
       when /^-a=?(.+)?/, /^--auth=?(.+)?/
         ENV['SAYA_AUTH'] = $1 || argv.shift

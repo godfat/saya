@@ -2,7 +2,7 @@
 require 'saya'
 
 ENV['RACK_ENV']  ||= 'production'
-ENV['SAYA_AUTH'] ||= "#{Saya::Root}/config/auth.yaml"
+ENV['SAYA_AUTH'] ||= Saya::Auth
 
 # load rest-core config
 %w[Twitter Facebook].each do |name|
