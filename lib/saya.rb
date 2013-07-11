@@ -2,6 +2,7 @@
 require 'saya/api'
 require 'rack'
 
+Saya::Env    = ENV['RACK_ENV'] || 'production'
 Saya::Root   = File.expand_path("#{__dir__}/..")
 Saya::Server = Rack::Builder.app do
   use Rack::ContentLength
@@ -13,12 +14,10 @@ Saya::Server = Rack::Builder.app do
 
   map '/api' do run Saya::API.new                          end
   map '/'    do run Rack::File.new("#{Saya::Root}/public") end
+end
 
-  env = ENV['RACK_ENV'] || 'production'
-
-  RC::Config.load(RC::Twitter,
-    "#{Saya::Root}/config/auth.yaml", env, 'twitter')
-
-  RC::Config.load(RC::Facebook,
-    "#{Saya::Root}/config/auth.yaml", env, 'facebook')
+# load rest-core config
+%w[Twitter Facebook].each do |name|
+  RC::Config.load(RC.const_get(name),
+    "#{Saya::Root}/config/auth.yaml", Saya::Env, name.downcase)
 end

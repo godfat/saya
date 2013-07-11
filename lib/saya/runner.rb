@@ -68,8 +68,7 @@ module Saya::Runner
 
   def parse argv
     options = {:config => "#{Saya::Root}/config.ru",
-               :Host   => '0.0.0.0', :Port => 8080 ,
-               :environment => 'production'}
+               :Host   => '0.0.0.0', :Port => 8080 }
 
     until argv.empty?
       case arg = argv.shift
