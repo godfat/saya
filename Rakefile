@@ -17,7 +17,7 @@ task 'gem:spec' do
     s.name    = 'saya'
     s.version = Saya::VERSION
     %w[rack jellyfish rest-more].each{ |g| s.add_dependency(g) }
-    %w[bacon].each{ |g| s.add_development_dependency(g) }
+    %w[bacon rack-handlers].each{ |g| s.add_development_dependency(g) }
   end
 
   Gemgem.write
