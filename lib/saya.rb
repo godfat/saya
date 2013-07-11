@@ -10,7 +10,7 @@ Saya::Server = Rack::Builder.app do
   use Rack::ContentType
   use Rack::Session::Pool
   use Rack::Config do |env|
-    env['PATH_INFO'] = 'index.html' if env['PATH_INFO'] == '/'
+    env['PATH_INFO'] = '/index.html' if env['PATH_INFO'] == '/'
   end
 
   map '/api' do run Saya::API.new                          end
