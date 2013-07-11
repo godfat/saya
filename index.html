@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Saya</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <style type="text/css">
+      html, body{ height: 100%; }
+      #wrap{
+        min-height: 100%;
+        margin: 0 auto -60px;
+      }
+      #push, #footer{ height: 60px;              }
+      #footer       { background-color: #f5f5f5; }
+      @media(max-width: 767px){
+        #footer{
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+      #wrap > .container{ padding-top: 60px; }
+      .container .credit{ margin: 20px 0;    }
+      .editarea, textarea{
+        width: 100%;
+        max-width: 767px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="active"><a href="/">Saya</a></li>
+                <li><a href="#about" role="button" data-toggle="modal">About</a></li>
+                <li><a href="https://github.com/godfat/saya">Source</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> <!-- navbar -->
+
+      <div class="container">
+        <div id="about" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
+          <div class="modal-header"><h3 id="aboutLabel">About Saya</h3></div>
+          <div class="modal-body">
+            <p></p>
+            <p>Saya is a product to provide a reference usage for <a href="https://github.com/godfat/jellyfish">Jellyfish</a>.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          </div>
+        </div> <!-- about -->
+
+        <div class="main">
+          <p>Say something to the following sites:</p>
+          <form action="/post" method="post">
+            <label class="checkbox"><input type="checkbox" id="twitter"/>Twitter</label>
+            <label class="checkbox"><input type="checkbox" id="facebook"/>Facebook</label>
+            <div class="editarea">
+              <p><textarea id="textarea"></textarea></p>
+              <p class="pagination-centered"><button type="submit" class="btn">Say!</button></p>
+            </div>
+          </form>
+        </div> <!-- main -->
+      </div> <!-- container -->
+
+      <div id="push"></div>
+    </div> <!-- wrap -->
+
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">Powered by <a href="https://github.com/godfat/jellyfish">Jellyfish</a> and <a href="https://github.com/cardinalblue/rest-more">rest-more</a>.</p>
+      </div>
+    </div> <!-- footer -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
