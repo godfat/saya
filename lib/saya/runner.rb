@@ -104,6 +104,10 @@ module Saya::Runner
         require 'rib/version'
         puts(Rib::VERSION)
         exit
+
+      else
+        warn("Unrecognized option: #{arg}")
+        exit(1)
       end
     end
 
