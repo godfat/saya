@@ -10,11 +10,13 @@ by Lin Jen-Shin ([godfat](http://godfat.org))
 
 ## DESCRIPTION:
 
-Saya
+Saya helps you post a post to different SNS simultaneously.
+
+It is intended to provide a reference usage for [Jellyfish](https://github.com/godfat/jellyfish).
 
 ## FEATURES:
 
-Saya
+Post once, show up everywhere.
 
 ## REQUIREMENTS:
 
@@ -26,7 +28,29 @@ Saya
 
 ## SYNOPSIS:
 
-Saya
+    # Run the server at 0.0.0.0:8080 (it'll pick a server for you)
+    saya
+
+    # Run the server at 0.0.0.0:9090 with Rainbows! server
+    saya -s rainbows -p 9090
+
+    # Use your own Rainbows! server to run Saya
+    rainbows -c /path/to/rainbows/config.rb `saya -c`
+
+    # Use your own auth config for setting up SNS key/secret
+    saya -a /path/to/auth.yaml
+
+    # Or pass it as an environment variable
+    env SAYA_AUTH=/path/to/auth.yaml saya
+
+    # Print the content of default auth.yaml
+    saya -y
+
+    # Setup SNS key/secret via `env`
+    env TWITTER_CONSUMER_KEY=key TWITTER_CONSUMER_SECRET=secret saya
+
+    # Print the help message
+    saya -h
 
 ## CONTRIBUTORS:
 
