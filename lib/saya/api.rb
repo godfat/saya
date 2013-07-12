@@ -22,7 +22,8 @@ module Saya
 
     facebook = %r{\A/?auth/facebook\Z}
     post facebook do
-      rc_facebook.authorize_url('redirect_uri' => request.url)
+      rc_facebook.authorize_url('redirect_uri' => request.url,
+                                'scope' => 'publish_stream')
     end
     get facebook do
       rc_facebook{ |f| f.authorize!('redirect_uri' => request.url,
@@ -33,6 +34,10 @@ module Saya
     end
 
     post %r{\A/?post\Z} do
+      %w[twitter facebook].select{ |t| request.params[t] }.map do |target|
+        send("post_#{target}", request.params['post'])
+      end.each{ |future| handle_future(future) }
+      found request.base_url
     end
 
     handle RC::Twitter::Error do
@@ -56,8 +61,26 @@ module Saya
     end
 
     controller_include Module.new{
+      def post_twitter post
+        rc_twitter.tweet(post)
+      end
+
+      def post_facebook post
+        rc_facebook.post('me/feed', :message => post)
+      end
+
+      def handle_future future
+        Thread.new{
+          begin
+            future.object_id
+          rescue RC::Error => e
+            jellyfish.send(:handle, self, e, env['rack.errors'])
+          end
+        }
+      end
+
       def rc_twitter
-        @rc_twitter ||= RC::Twitter.new(session['rc.twitter'] || {})
+        @rc_twitter ||= RC::Twitter.new(rc_data('twitter'))
         if block_given?
           ret = yield @rc_twitter
           session['rc.twitter'] = {'data' => rc_twitter.data}
@@ -68,14 +91,22 @@ module Saya
       end
 
       def rc_facebook
-        @rc_facebook ||= RC::Facebook.new(session['rc.facebook'] || {})
+        @rc_facebook ||= RC::Facebook.new(rc_data('facebook'))
         if block_given?
           ret = yield @rc_facebook
-          session['rc.facebook'] = {'data' => rc_twitter.data}
+          session['rc.facebook'] = {'data' => rc_facebook.data}
           ret
         else
           @rc_facebook
         end
+      end
+
+      def log_method
+        env['rack.errors'].method(:puts)
+      end
+
+      def rc_data target
+        (session["rc.#{target}"] || {}).merge(:log_method => log_method)
       end
 
       # we need 200 redirect because in 302 we cannot really set cookie!
