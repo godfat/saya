@@ -2,18 +2,19 @@
 
 Gem::Specification.new do |s|
   s.name = "saya"
-  s.version = "0.1.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Lin Jen-Shin (godfat)"]
-  s.date = "2013-07-11"
-  s.description = "Saya"
+  s.date = "2013-07-12"
+  s.description = "Saya helps you post a post to different SNS simultaneously.\n\nIt is intended to provide a reference usage for [Jellyfish](https://github.com/godfat/jellyfish)."
   s.email = ["godfat (XD) godfat.org"]
   s.executables = ["saya"]
   s.files = [
   ".gitignore",
   ".gitmodules",
   ".travis.yml",
+  "CHANGES.md",
   "Gemfile",
   "LICENSE",
   "README.md",
@@ -36,8 +37,8 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/godfat/saya"
   s.licenses = ["Apache License 2.0"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "2.0.4"
-  s.summary = "Saya"
+  s.rubygems_version = "2.0.5"
+  s.summary = "Saya helps you post a post to different SNS simultaneously."
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
