@@ -3,6 +3,7 @@ angular.module('saya', ['ngCookies']);
 
 function auth($scope, $http, $cookies){
   ['twitter', 'facebook'].forEach(function(target){
+    // checkbox checked?
     var checked = function(){
       return $scope[target + "_name"]() !== undefined;
     };
@@ -10,10 +11,13 @@ function auth($scope, $http, $cookies){
     $scope[target + '_as']      = function(){
       if(checked()) return 'as';
     };
+
+    // getters
     $scope[target + '_name']    = function(){
       return $cookies[target + '_name'];
     };
 
+    // auth actions
     $scope[target + '_auth'] = function(){
       if(checked()){
         $cookies[target + '_name'] = undefined;
