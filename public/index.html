@@ -67,12 +67,14 @@
           <p>Say something to the following sites:</p>
           <form action="/api/post" method="post" ng-controller="auth">
             <label class="checkbox">
-              <input type="checkbox" name="twitter" ng-click="twitter_auth()" ng-checked="twitter_checked()"/>
+              <input type="checkbox" name="twitter" ng-model="twitter_checked">
               Twitter {{twitter_as()}} <span class="label label-success">{{twitter_name()}}</span>
+              <span class="label label-important">{{twitter_error()}}</span>
             </label>
             <label class="checkbox">
-              <input type="checkbox" name="facebook" ng-click="facebook_auth()" ng-checked="facebook_checked()"/>
+              <input type="checkbox" name="facebook" ng-model="facebook_checked">
               Facebook {{facebook_as()}} <span class="label label-success">{{facebook_name()}}</span>
+              <span class="label label-important">{{facebook_error()}}</span>
             </label>
             <div class="editarea">
               <p><textarea id="textarea" name="post"></textarea></p>

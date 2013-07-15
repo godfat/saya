@@ -40,24 +40,20 @@ module Saya
       found request.base_url
     end
 
-    handle RC::Twitter::Error do
+    handle RC::Twitter::Error do |e|
       set_cookie('twitter_name', nil)
       session.delete('rc.twitter')
       rc_twitter.data = nil
-      status, headers, body = call(env)
-      self.status  status
-      self.headers headers
-      self.body    body
+      status 401
+      "Authorization failed: #{e.message}"
     end
 
-    handle RC::Facebook::Error do
+    handle RC::Facebook::Error do |e|
       set_cookie('facebook_name', nil)
       session.delete('rc.facebook')
       rc_facebook.data = nil
-      status, headers, body = call(env)
-      self.status  status
-      self.headers headers
-      self.body    body
+      status 401
+      "Authorization failed: #{e.message}"
     end
 
     controller_include Module.new{
