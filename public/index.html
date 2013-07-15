@@ -3,66 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Saya</title>
-    <link rel="icon" type="image/png" href="jellyfish.png">
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
-    <style type="text/css">
-      html, body{ height: 100%; }
-      #wrap{
-        min-height: 100%;
-        margin: 0 auto -60px;
-      }
-      #push, #footer{ height: 60px;              }
-      #footer       { background-color: #f5f5f5; }
-      #wrap > .container{ padding-top: 60px; }
-      .container .credit{ margin: 20px 0;    }
-      .editarea, textarea{
-        width: 100%;
-        max-width: 767px;
-        height: 50vh;
-      }
-      @media(max-width: 979px){
-        #wrap > .container{ padding-top: 0; }
-        #footer{
-          margin-left: -20px;
-          margin-right: -20px;
-          padding-left: 20px;
-          padding-right: 20px;
-        }
-      }
-    </style>
+    <link href="jellyfish.png" rel="icon" type="image/png">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-cookies.min.js"></script>
-    <script>
-      angular.module('saya', ['ngCookies']);
-      function auth($scope, $http, $cookies){
-        ['twitter', 'facebook'].forEach(function(target){
-          var checked = function(){
-            return $scope[target + "_name"]() !== undefined;
-          };
-          $scope[target + '_checked'] = checked;
-          $scope[target + '_as']      = function(){
-            if(checked()) return 'as';
-          };
-          $scope[target + '_name']    = function(){
-            return $cookies[target + '_name'];
-          };
-
-          $scope[target + '_auth'] = function(){
-            if(checked()){
-              $cookies[target + '_name'] = undefined;
-            }
-            else{
-              $http.post('/api/auth/' + target).success(
-                function(data){ window.location = data; });
-            }
-          };
-        });
-      };
-    </script>
-
+    <script src="script.js"></script>
   </head>
+
   <body>
     <div id="wrap">
       <div class="navbar navbar-inverse navbar-fixed-top">
@@ -140,6 +90,7 @@
         <p class="muted credit">Powered by <a href="https://github.com/godfat/jellyfish">Jellyfish</a> and <a href="https://github.com/cardinalblue/rest-more">rest-more</a>.</p>
       </div>
     </div> <!-- footer -->
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
   </body>
