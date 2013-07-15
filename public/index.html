@@ -68,12 +68,16 @@
           <form action="/api/post" method="post" ng-controller="auth">
             <label class="checkbox">
               <input type="checkbox" name="twitter" ng-model="twitter_checked">
-              Twitter {{twitter_as()}} <span class="label label-success">{{twitter_name()}}</span>
+              Twitter {{twitter_as()}}
+              <img src="spinner.gif" alt="spinner" class="spinner" ng-show="twitter_spinner">
+              <span class="label label-success">{{twitter_name()}}</span>
               <span class="label label-important">{{twitter_error()}}</span>
             </label>
             <label class="checkbox">
               <input type="checkbox" name="facebook" ng-model="facebook_checked">
-              Facebook {{facebook_as()}} <span class="label label-success">{{facebook_name()}}</span>
+              Facebook {{facebook_as()}}
+              <img src="spinner.gif" alt="spinner" class="spinner" ng-show="facebook_spinner">
+              <span class="label label-success">{{facebook_name()}}</span>
               <span class="label label-important">{{facebook_error()}}</span>
             </label>
             <div class="editarea">

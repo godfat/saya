@@ -17,6 +17,7 @@ function auth($scope, $http, $cookies){
     var set_err  = function(val){
       if(val !== undefined) set_checked(false); // uncheck if there's an error
       del_name(); // we don't want to show error and name at the same time
+      $scope[target + '_spinner'] = false;
       return $scope[target + '_err' ] = val;
     };
     var get_err  = function(){
@@ -39,6 +40,7 @@ function auth($scope, $http, $cookies){
         $http.post('/api/auth/' + target).
           success(function(data){ window.location = data ; }).
           error(  function(data){           set_err(data); });
+        $scope[target + '_spinner'] = true;
       }
       else{
         del_name();
