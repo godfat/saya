@@ -14,83 +14,83 @@
   </head>
 
   <body>
-      <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-          <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <div class="nav-collapse collapse">
-              <ul class="nav">
-                <li class="active"><a href="/">Saya</a></li>
-                <li><a href="#about" role="button" data-toggle="modal">About</a></li>
-                <li><a href="https://github.com/godfat/saya">Source</a></li>
-              </ul>
-            </div>
+    <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Saya</a></li>
+              <li><a href="#about" role="button" data-toggle="modal">About</a></li>
+              <li><a href="https://github.com/godfat/saya">Source</a></li>
+            </ul>
           </div>
         </div>
-      </div> <!-- navbar -->
+      </div>
+    </div> <!-- navbar -->
 
-        <div id="about" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
-          <div class="modal-header"><h3 id="aboutLabel">About Saya</h3></div>
-          <div class="modal-body">
-            <p>Saya helps you post a post to different SNS simultaneously.</p>
-            <p>It is intended to provide a reference usage for <a href="https://github.com/godfat/jellyfish">Jellyfish</a>.</p>
-            <p>
-              <table><tr>
-                <th>Runtime library:</th>
-                <th>Development library:</th></tr><tr><td><br/><ul>
-                  <li><a href="http://angularjs.org/">AngularJS</a></li>
-                  <li><a href="http://jquery.com/">jQuery</a> (for this About)</li>
-                  <li><a href="http://twitter.github.io/bootstrap/">Bootstrap</a></li>
-                  <li><a href="https://github.com/godfat/jellyfish">Jellyfish</a></li>
-                  <li><a href="https://github.com/cardinalblue/rest-more">rest-more</a></li>
-                  <li><a href="http://rack.github.io/">Rack</a></li>
-                  <li><a href="https://github.com/godfat/rack-handlers">rack-handlers</a>(if Unicorn family is used)</li>
-                </ul></td><td><br/><ul>
-                  <li><a href="https://github.com/chneukirchen/bacon">Bacon</a></li>
-                  <li><a href="https://github.com/godfat/muack">Muack</a></li>
-                  <li><a href="https://github.com/godfat/rib">Rib</a></li>
-                </ul></td></tr></table>
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-          </div>
-        </div> <!-- about -->
+    <div id="about" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
+      <div class="modal-header"><h3 id="aboutLabel">About Saya</h3></div>
+      <div class="modal-body">
+        <p>Saya helps you post a post to different SNS simultaneously.</p>
+        <p>It is intended to provide a reference usage for <a href="https://github.com/godfat/jellyfish">Jellyfish</a>.</p>
+        <p>
+          <table><tr>
+            <th>Runtime library:</th>
+            <th>Development library:</th></tr><tr><td><br/><ul>
+              <li><a href="http://angularjs.org/">AngularJS</a></li>
+              <li><a href="http://jquery.com/">jQuery</a> (for this About)</li>
+              <li><a href="http://twitter.github.io/bootstrap/">Bootstrap</a></li>
+              <li><a href="https://github.com/godfat/jellyfish">Jellyfish</a></li>
+              <li><a href="https://github.com/cardinalblue/rest-more">rest-more</a></li>
+              <li><a href="http://rack.github.io/">Rack</a></li>
+              <li><a href="https://github.com/godfat/rack-handlers">rack-handlers</a>(if Unicorn family is used)</li>
+            </ul></td><td><br/><ul>
+              <li><a href="https://github.com/chneukirchen/bacon">Bacon</a></li>
+              <li><a href="https://github.com/godfat/muack">Muack</a></li>
+              <li><a href="https://github.com/godfat/rib">Rib</a></li>
+            </ul></td></tr></table>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div> <!-- about -->
 
-        <div id="main" class="container">
-          <p>Say something to the following sites:</p>
-          <form ng-controller="auth" ng-submit="submit()">
-            <label class="checkbox">
-              <input type="checkbox" ng-model="twitter_checked">
-              Twitter {{twitter_as()}}
-              <img src="spinner.gif" alt="spinner" class="spinner" ng-show="twitter_spinner">
-              <span class="label label-success">{{twitter_name()}}</span>
-              <span class="label label-important">{{twitter_error()}}</span>
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" ng-model="facebook_checked">
-              Facebook {{facebook_as()}}
-              <img src="spinner.gif" alt="spinner" class="spinner" ng-show="facebook_spinner">
-              <span class="label label-success">{{facebook_name()}}</span>
-              <span class="label label-important">{{facebook_error()}}</span>
-            </label>
-            <div class="editarea">
-              <p><textarea id="textarea" ng-model="post"></textarea></p>
-              <p class="pagination-centered">
-                <input type="submit" value="Say!" class="btn" ng-hide="posting">
-                <img src="spinner.gif" alt="spinner" class="spinner" ng-show="posting">
-                <div ng-hide="posting">
-                  <p ng-repeat="res in responses" class="alert alert-success">{{res}}</p>
-                  <p ng-repeat="err in errors" class="alert alert-error">{{err}}</p>
-                </div>
-              </p>
+    <div id="main" class="container">
+      <p>Say something to the following sites:</p>
+      <form ng-controller="auth" ng-submit="submit()">
+        <label class="checkbox">
+          <input type="checkbox" ng-model="twitter_checked">
+          Twitter {{twitter_as()}}
+          <img src="spinner.gif" alt="spinner" class="spinner" ng-show="twitter_spinner">
+          <span class="label label-success">{{twitter_name()}}</span>
+          <span class="label label-important">{{twitter_error()}}</span>
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" ng-model="facebook_checked">
+          Facebook {{facebook_as()}}
+          <img src="spinner.gif" alt="spinner" class="spinner" ng-show="facebook_spinner">
+          <span class="label label-success">{{facebook_name()}}</span>
+          <span class="label label-important">{{facebook_error()}}</span>
+        </label>
+        <div class="editarea">
+          <p><textarea id="textarea" ng-model="post"></textarea></p>
+          <p class="pagination-centered">
+            <input type="submit" value="Say!" class="btn" ng-hide="posting">
+            <img src="spinner.gif" alt="spinner" class="spinner" ng-show="posting">
+            <div ng-hide="posting">
+              <p ng-repeat="res in responses" class="alert alert-success">{{res}}</p>
+              <p ng-repeat="err in errors" class="alert alert-error">{{err}}</p>
             </div>
-          </form>
-        </div> <!-- main -->
+          </p>
+        </div>
+      </form>
+    </div> <!-- main -->
 
     <div id="footer" class="navbar navbar-fixed-bottom">
       <div class="container">
