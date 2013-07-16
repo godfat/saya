@@ -35,7 +35,7 @@ module Saya
 
     post %r{\A/?post\Z} do
       params = if request.params.empty?
-                 RC::Json.decode(request.body)
+                 RC::Json.decode(request.body) # angular only posts json
                else
                 request.params
                end
