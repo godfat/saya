@@ -70,7 +70,7 @@ module Saya
           begin
             future.tap{}
           rescue RC::Error => e
-            jellyfish.send(:handle, self, e, env['rack.errors'])
+            halt(e)
           end
         }
       end
