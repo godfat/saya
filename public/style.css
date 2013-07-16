@@ -10,12 +10,3 @@
   max-width: 767px;
   height: 50vh;
 }
-@media(max-width: 979px){
-  #wrap > .container{ padding-top: 0; }
-  #footer{
-    margin-left: -20px;
-    margin-right: -20px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
