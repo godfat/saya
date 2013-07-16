@@ -34,26 +34,47 @@ module Saya
     end
 
     post %r{\A/?post\Z} do
-      %w[twitter facebook].select{ |t| request.params[t] }.map do |target|
-        send("post_#{target}", request.params['post'])
-      end.each{ |future| handle_future(future) }
-      found request.base_url
+      params = if request.params.empty?
+                 RC::Json.decode(request.body)
+               else
+                request.params
+               end
+
+      futures = %w[twitter facebook].select{ |t| params[t] }.map do |target|
+        [target, send("post_#{target}", params['post'])]
+      end
+
+      response =
+        futures.inject('responses' => [],
+                       'errors'    => []) do |result, (target, future)|
+          begin
+            future.tap{}
+            result['responses'] << "✓ #{target.capitalize} posted."
+          rescue RC::Error => e
+            case e
+            when RC::Twitter::Error
+              reset_twitter
+            when RC::Facebook::Error
+              reset_facebook
+            end
+            result['errors'] << "✗ #{target.capitalize} failed: #{e.message}"
+          end
+          result
+        end
+
+      RC::Json.encode(response)
     end
 
     handle RC::Twitter::Error do |e|
-      set_cookie('twitter_name', nil)
-      session.delete('rc.twitter')
-      rc_twitter.data = nil
+      reset_twitter
       status 401
-      "Authorization failed: #{e.message}"
+      "Authorizing failed: #{e.message}"
     end
 
     handle RC::Facebook::Error do |e|
-      set_cookie('facebook_name', nil)
-      session.delete('rc.facebook')
-      rc_facebook.data = nil
+      reset_facebook
       status 401
-      "Authorization failed: #{e.message}"
+      "Authorizing failed: #{e.message}"
     end
 
     controller_include Module.new{
@@ -65,14 +86,16 @@ module Saya
         rc_facebook.post('me/feed', :message => post)
       end
 
-      def handle_future future
-        Thread.new{
-          begin
-            future.tap{}
-          rescue RC::Error => e
-            halt(e)
-          end
-        }
+      def reset_twitter
+        set_cookie('twitter_name', nil)
+        session.delete('rc.twitter')
+        rc_twitter.data = nil
+      end
+
+      def reset_facebook
+        set_cookie('facebook_name', nil)
+        session.delete('rc.facebook')
+        rc_facebook.data = nil
       end
 
       def rc_twitter

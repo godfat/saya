@@ -65,24 +65,31 @@
 
         <div class="main">
           <p>Say something to the following sites:</p>
-          <form action="/api/post" method="post" ng-controller="auth">
+          <form ng-controller="auth" ng-submit="submit()">
             <label class="checkbox">
-              <input type="checkbox" name="twitter" ng-model="twitter_checked">
+              <input type="checkbox" ng-model="twitter_checked">
               Twitter {{twitter_as()}}
               <img src="spinner.gif" alt="spinner" class="spinner" ng-show="twitter_spinner">
               <span class="label label-success">{{twitter_name()}}</span>
               <span class="label label-important">{{twitter_error()}}</span>
             </label>
             <label class="checkbox">
-              <input type="checkbox" name="facebook" ng-model="facebook_checked">
+              <input type="checkbox" ng-model="facebook_checked">
               Facebook {{facebook_as()}}
               <img src="spinner.gif" alt="spinner" class="spinner" ng-show="facebook_spinner">
               <span class="label label-success">{{facebook_name()}}</span>
               <span class="label label-important">{{facebook_error()}}</span>
             </label>
             <div class="editarea">
-              <p><textarea id="textarea" name="post"></textarea></p>
-              <p class="pagination-centered"><button type="submit" class="btn">Say!</button></p>
+              <p><textarea id="textarea" ng-model="post"></textarea></p>
+              <p class="pagination-centered">
+                <input type="submit" value="Say!" class="btn" ng-hide="posting">
+                <img src="spinner.gif" alt="spinner" class="spinner" ng-show="posting">
+                <div ng-hide="posting">
+                  <p ng-repeat="res in responses" class="alert alert-success">{{res}}</p>
+                  <p ng-repeat="err in errors" class="alert alert-error">{{err}}</p>
+                </div>
+              </p>
             </div>
           </form>
         </div> <!-- main -->

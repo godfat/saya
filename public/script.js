@@ -3,6 +3,7 @@
 angular.module('saya', ['ngCookies']);
 
 function auth($scope, $http, $cookies){
+  // for checkboxes
   ['twitter', 'facebook'].forEach(function(target){
     // we need to make checkbox reflect authorization
     var set_checked = function(val){
@@ -50,4 +51,22 @@ function auth($scope, $http, $cookies){
     // init model
     set_checked(get_name() !== undefined);
   });
+
+  // for submit
+  $scope.submit = function(){
+    $scope.posting   = true;
+    $scope.responses = $scope.errors = undefined;
+    var payload = {'twitter' : $scope.twitter_checked ,
+                   'facebook': $scope.facebook_checked,
+                   'post'    : $scope.post            };
+    $http.post('/api/post', payload).
+      success(function(data){ // angular would parse the json automatically
+        $scope.responses = data['responses'];
+        $scope.errors    = data['errors'];
+        $scope.posting   = false;
+      }).error(function(data){
+        $scope.errors    = "Server error: " + data;
+        $scope.posting   = false;
+      });
+  };
 };
