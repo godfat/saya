@@ -68,7 +68,7 @@ module Saya
       def handle_future future
         Thread.new{
           begin
-            future.object_id
+            future.tap{}
           rescue RC::Error => e
             jellyfish.send(:handle, self, e, env['rack.errors'])
           end
