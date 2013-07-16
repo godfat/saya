@@ -14,7 +14,6 @@
   </head>
 
   <body>
-    <div id="wrap">
       <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
           <div class="container">
@@ -34,7 +33,6 @@
         </div>
       </div> <!-- navbar -->
 
-      <div class="container">
         <div id="about" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
           <div class="modal-header"><h3 id="aboutLabel">About Saya</h3></div>
           <div class="modal-body">
@@ -63,7 +61,7 @@
           </div>
         </div> <!-- about -->
 
-        <div class="main">
+        <div id="main" class="container">
           <p>Say something to the following sites:</p>
           <form ng-controller="auth" ng-submit="submit()">
             <label class="checkbox">
@@ -93,8 +91,6 @@
             </div>
           </form>
         </div> <!-- main -->
-      </div> <!-- container -->
-    </div> <!-- wrap -->
 
     <div id="footer" class="navbar navbar-fixed-bottom">
       <div class="container">
