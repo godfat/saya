@@ -7,6 +7,16 @@ module Saya
   class API
     include Jellyfish
 
+    get '/test' do
+      headers_merge('Content-Type' => 'text/event-stream',
+                    'rack.hijack'  => lambda do |io|
+                      loop do
+                        io.write("data: This is the first message.\n\n")
+                        sleep 5
+                      end
+                    end)
+    end
+
     twitter = %r{\A/?auth/twitter\Z}
     post twitter do
       rc_twitter{ |t|
