@@ -135,8 +135,9 @@ module Saya::Runner
   end
 
   def help
-    maxn = options.transpose.first.map(&:size).max
-    maxd = options.transpose.last .map(&:size).max
+    optt = options.transpose
+    maxn = optt.first.map(&:size).max
+    maxd = optt.last .map(&:size).max
     "Usage: saya [ruby OPTIONS] [saya OPTIONS]\n" +
     options.map{ |(name, desc)|
       if name.end_with?(':')
