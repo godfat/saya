@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Lin Jen-Shin (godfat)"]
-  s.date = "2013-09-28"
+  s.date = "2013-09-29"
   s.description = "Saya helps you post a post to different SNS simultaneously.\n\nIt is intended to provide a reference usage for [Jellyfish](https://github.com/godfat/jellyfish)."
   s.email = ["godfat (XD) godfat.org"]
   s.executables = ["saya"]
